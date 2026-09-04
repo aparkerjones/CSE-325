@@ -1,18 +1,19 @@
-# CSE 325 Week 01
+# CSE 325 Week 01 Assignment
 
-This repository contains the Week 01 .NET assignment:
+This is my Week 01 assignment for CSE 325. It includes the two applications from the assignment:
 
-- `src/PizzaApi`: ASP.NET Core controller API with in-memory CRUD operations for pizzas.
-- `src/SalesSummary`: console app that creates a formatted sales summary from text files.
-- `NOTES.md`: API request and response evidence and the sales-summary function notes.
+- `src/PizzaApi` is a small ASP.NET Core API for managing pizzas.
+- `src/SalesSummary` reads sales files and creates a summary report.
 
-Both projects target .NET 8. Install the .NET 8 SDK before running them.
+The API uses an in-memory list, so changes made through POST, PUT, and DELETE only last while the app is running. The starting pizza list includes the additional Hawaiian record required by the assignment.
 
-The repository includes `global.json` to select the .NET 8 SDK used for this assignment.
+Both projects target .NET 8. The `global.json` file selects the .NET 8 SDK used for this project.
 
 ```powershell
 dotnet run --project src/PizzaApi
 dotnet run --project src/SalesSummary
 ```
 
-The API is an in-memory example, so data resets whenever the application restarts.
+The sales program uses the files in `src/SalesSummary/sales-data` and writes `sales-summary.txt` to its build output directory. With the included data, the total is `$561.24`.
+
+The API request examples and the sales-summary function are documented in [NOTES.md](NOTES.md).

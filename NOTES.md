@@ -1,10 +1,10 @@
-# CSE 325 Week 01 Assignment
+# CSE 325 Week 01 Notes
 
-## Part 1: Pizza API evidence
+## Pizza API
 
-The API starts with the module records Margherita and Pepperoni and includes the additional record Hawaiian.
+I started with the pizza records from the Microsoft Learn example and added Hawaiian as the extra record required by the assignment. The API is backed by an in-memory list, so it resets to these records whenever it starts.
 
-Run the API from `src/PizzaApi` with `dotnet run`. The controller uses an in-memory list, so each run starts with the three records above.
+I smoke-tested the API on September 4, 2026. I ran it at `http://localhost:5079` and checked each CRUD operation below.
 
 The smoke test was run against the built solution on September 4, 2026. The API was started with `http://localhost:5079`.
 
@@ -14,7 +14,7 @@ Request: `GET /api/pizzas`
 
 Status: `200 OK`
 
-Response:
+Response from the initial request:
 
 ```json
 [
@@ -32,7 +32,7 @@ Request: `POST /api/pizzas`
 { "name": "Veggie", "price": 11.75 }
 ```
 
-Status: `201 Created` (the API assigned ID `4`)
+The API returned `201 Created` and assigned the new pizza ID `4`.
 
 ### PUT
 
@@ -42,16 +42,16 @@ Request: `PUT /api/pizzas/4`
 { "name": "Veggie Deluxe", "price": 13.25 }
 ```
 
-Status: `204 No Content`
+The API returned `204 No Content`.
 
 ### DELETE
 
 Request: `DELETE /api/pizzas/4`
 
-Status: `204 No Content`
+The API returned `204 No Content`.
 
-## Part 2: Sales summary function
+## Sales summary
 
-The working function is `SalesReport.Create` in `src/SalesSummary/Program.cs`. It reads every text file in the sales directory, calculates each file's total, calculates the grand total, and returns the formatted report text. The console application writes that text to `sales-summary.txt`.
+The sales-summary code is in `SalesReport.Create` in `src/SalesSummary/Program.cs`. It reads each text file in the sales-data directory, adds the values in each file, and builds a report with the total for each file and the combined total. The console application writes the report to `sales-summary.txt` in the build output directory.
 
-With the included sample files, the report total is `$561.24`. The smoke test confirmed that `SalesSummary` generated the report successfully.
+I ran the console project after building the solution. It generated the report successfully, and the total from the included files was `$561.24`.
