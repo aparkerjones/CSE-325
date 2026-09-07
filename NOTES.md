@@ -4,9 +4,9 @@
 
 I started with the pizza records from the Microsoft Learn example and added Hawaiian as the extra record required by the assignment. The API is backed by an in-memory list, so it resets to these records whenever it starts.
 
-I smoke-tested the API on September 4, 2026. I ran it at `http://localhost:5079` and checked each CRUD operation below.
+I smoke-tested the API. I ran it  on localhost and checked each CRUD operation below.
 
-The smoke test was run against the built solution on September 4, 2026. The API was started with `http://localhost:5079`.
+The smoke test was run against the built solution.
 
 ### GET
 
