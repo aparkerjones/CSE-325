@@ -54,4 +54,38 @@ The API returned `204 No Content`.
 
 The sales-summary code is in `SalesReport.Create` in `src/SalesSummary/Program.cs`. It reads each text file in the sales-data directory, adds the values in each file, and builds a report with the total for each file and the combined total. The console application writes the report to `sales-summary.txt` in the build output directory.
 
+### Working sales summary function
+
+```csharp
+public static string Create(string directoryPath)
+{
+  var fileTotals = new Dictionary<string, decimal>();
+
+  foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*.txt").Order())
+  {
+    var total = File.ReadLines(filePath)
+      .Where(line => decimal.TryParse(line, NumberStyles.Currency, CultureInfo.InvariantCulture, out _))
+      .Select(line => decimal.Parse(line, NumberStyles.Currency, CultureInfo.InvariantCulture))
+      .Sum();
+
+    fileTotals[Path.GetFileName(filePath)] = total;
+  }
+
+  var grandTotal = fileTotals.Values.Sum();
+  var report = new StringBuilder()
+    .AppendLine("Sales Summary")
+    .AppendLine("----------------------------")
+    .AppendLine($"Total Sales: {grandTotal:C}")
+    .AppendLine()
+    .AppendLine("Details:");
+
+  foreach (var fileTotal in fileTotals)
+  {
+    report.AppendLine($"{fileTotal.Key}: {fileTotal.Value:C}");
+  }
+
+  return report.ToString();
+}
+```
+
 I ran the console project after building the solution. It generated the report successfully, and the total from the included files was `$561.24`.
