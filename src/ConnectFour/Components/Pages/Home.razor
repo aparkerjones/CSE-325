@@ -1,0 +1,187 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Connect Four</PageTitle>
+
+<main class="game-page">
+	<section class="game-header">
+		<div>
+			<p class="eyebrow">TWO PLAYERS · ONE BOARD</p>
+			<h1>Connect Four</h1>
+			<p class="intro">Drop your pieces, build a line, and connect four before your opponent does.</p>
+		</div>
+		<div class="turn-card" aria-live="polite">
+			<span class="turn-label">@StatusLabel</span>
+			<strong class="turn-player @CurrentPlayerClass">@TurnText</strong>
+		</div>
+	</section>
+
+	<section class="game-layout" aria-label="Connect Four game">
+		<div class="board-area">
+			<div class="column-controls" aria-label="Choose a column">
+				@for (var column = 0; column < Columns; column++)
+				{
+					var selectedColumn = column;
+					<button class="drop-button" @onclick="() => DropPiece(selectedColumn)" disabled="@(GameOver || IsColumnFull(selectedColumn))">
+						<span aria-hidden="true">↓</span>
+						<span class="visually-hidden">Drop piece in column @(column + 1)</span>
+					</button>
+				}
+			</div>
+			<div class="board" role="grid" aria-label="Connect Four board">
+				@for (var row = 0; row < Rows; row++)
+				{
+					for (var column = 0; column < Columns; column++)
+					{
+						var piece = Board[row, column];
+						<div class="slot" role="gridcell" aria-label="Row @(row + 1), column @(column + 1), @PieceLabel(piece)">
+							<span class="piece @PieceClass(piece)"></span>
+						</div>
+					}
+				}
+			</div>
+			<button class="reset-button" @onclick="ResetGame">Reset game</button>
+		</div>
+
+		<aside class="score-panel">
+			<div class="panel-heading">
+				<div>
+					<p class="eyebrow">YOUR CUSTOM FEATURE</p>
+					<h2>Win streaks</h2>
+				</div>
+			</div>
+			<p class="score-intro">Win consecutive games to build your streak.</p>
+			<div class="score-row">
+				<span><i class="score-dot red"></i>Red</span>
+				<strong>@RedWins</strong>
+			</div>
+			<div class="score-row">
+				<span><i class="score-dot yellow"></i>Yellow</span>
+				<strong>@YellowWins</strong>
+			</div>
+			<p class="round-count">Games completed: @GamesCompleted</p>
+		</aside>
+	</section>
+</main>
+
+@code {
+	private const int Rows = 6;
+	private const int Columns = 7;
+	private readonly Player[,] Board = new Player[Rows, Columns];
+	private Player CurrentPlayer = Player.Red;
+	private bool GameOver;
+	private string? WinnerMessage;
+	private int RedWins;
+	private int YellowWins;
+	private int GamesCompleted;
+
+	private string StatusLabel => WinnerMessage is null ? "CURRENT TURN" : "GAME OVER";
+	private string TurnText => WinnerMessage ?? $"{CurrentPlayer}'s turn";
+	private string CurrentPlayerClass => WinnerMessage is null ? CurrentPlayer.ToString().ToLowerInvariant() : "finished";
+
+	private void DropPiece(int column)
+	{
+		if (GameOver)
+		{
+			return;
+		}
+
+		var row = FindOpenRow(column);
+		if (row < 0)
+		{
+			return;
+		}
+
+		Board[row, column] = CurrentPlayer;
+		if (HasWon(row, column))
+		{
+			WinnerMessage = $"{CurrentPlayer} wins!";
+			GameOver = true;
+			GamesCompleted++;
+			if (CurrentPlayer == Player.Red)
+			{
+				RedWins++;
+			}
+			else
+			{
+				YellowWins++;
+			}
+		}
+		else if (Board.Cast<Player>().Count(piece => piece != Player.None) == Rows * Columns)
+		{
+			WinnerMessage = "It's a draw!";
+			GameOver = true;
+			GamesCompleted++;
+		}
+		else
+		{
+			CurrentPlayer = CurrentPlayer == Player.Red ? Player.Yellow : Player.Red;
+		}
+	}
+
+	private void ResetGame()
+	{
+		Array.Clear(Board);
+		CurrentPlayer = Player.Red;
+		WinnerMessage = null;
+		GameOver = false;
+	}
+
+	private int FindOpenRow(int column)
+	{
+		for (var row = Rows - 1; row >= 0; row--)
+		{
+			if (Board[row, column] == Player.None)
+			{
+				return row;
+			}
+		}
+
+		return -1;
+	}
+
+	private bool IsColumnFull(int column) => Board[0, column] != Player.None;
+
+	private bool HasWon(int row, int column)
+	{
+		var directions = new[] { (Row: 0, Column: 1), (Row: 1, Column: 0), (Row: 1, Column: 1), (Row: 1, Column: -1) };
+		return directions.Any(direction => CountPieces(row, column, direction.Row, direction.Column) + CountPieces(row, column, -direction.Row, -direction.Column) - 1 >= 4);
+	}
+
+	private int CountPieces(int row, int column, int rowStep, int columnStep)
+	{
+		var player = Board[row, column];
+		var count = 0;
+
+		while (row >= 0 && row < Rows && column >= 0 && column < Columns && Board[row, column] == player)
+		{
+			count++;
+			row += rowStep;
+			column += columnStep;
+		}
+
+		return count;
+	}
+
+	private static string PieceClass(Player piece) => piece switch
+	{
+		Player.Red => "red",
+		Player.Yellow => "yellow",
+		_ => "empty"
+	};
+
+	private static string PieceLabel(Player piece) => piece switch
+	{
+		Player.Red => "red piece",
+		Player.Yellow => "yellow piece",
+		_ => "empty"
+	};
+
+	private enum Player
+	{
+		None,
+		Red,
+		Yellow
+	}
+
+}
