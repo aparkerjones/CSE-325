@@ -1,10 +1,14 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaApi", "src\PizzaApi\PizzaApi.csproj", "{E0B2A3F1-3C9B-4F8A-9A5B-1C31B7E2B2F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesSummary", "src\SalesSummary\SalesSummary.csproj", "{A6D2B1F4-79C5-4B8F-8C0A-2D5E6F7A8B90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A2BA9E3E-52D0-4741-95CA-2F6532BD8665}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBlazor", "src\PizzaBlazor\PizzaBlazor.csproj", "{23E39E11-342F-4336-BE62-D8FE6EE34876}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,5 +24,12 @@ Global
 		{A6D2B1F4-79C5-4B8F-8C0A-2D5E6F7A8B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6D2B1F4-79C5-4B8F-8C0A-2D5E6F7A8B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6D2B1F4-79C5-4B8F-8C0A-2D5E6F7A8B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E39E11-342F-4336-BE62-D8FE6EE34876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E39E11-342F-4336-BE62-D8FE6EE34876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E39E11-342F-4336-BE62-D8FE6EE34876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E39E11-342F-4336-BE62-D8FE6EE34876}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23E39E11-342F-4336-BE62-D8FE6EE34876} = {A2BA9E3E-52D0-4741-95CA-2F6532BD8665}
 	EndGlobalSection
 EndGlobal

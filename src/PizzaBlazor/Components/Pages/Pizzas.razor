@@ -1,0 +1,25 @@
+@page "/pizzas"
+@using PizzaBlazor.Models
+
+<PageTitle>Pizza List</PageTitle>
+
+<section class="page-heading">
+    <p class="eyebrow">THE MENU</p>
+    <h1>Check out our menu</h1>
+    <p>Pick a pizza and see what makes it special.</p>
+</section>
+
+<div class="pizza-grid">
+    @foreach (var pizza in PizzaCatalog.All)
+    {
+        <article class="pizza-card">
+            <div class="pizza-number">@($"0{pizza.Id}")</div>
+            <h2>@pizza.Name</h2>
+            <p>@pizza.Description</p>
+            <div class="pizza-card-footer">
+                <span class="price">@pizza.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</span>
+                <a href="pizzas/@pizza.Id">View details</a>
+            </div>
+        </article>
+    }
+</div>

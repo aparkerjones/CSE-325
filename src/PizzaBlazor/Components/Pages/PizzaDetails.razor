@@ -1,0 +1,30 @@
+@page "/pizzas/{Id:int}"
+@using PizzaBlazor.Models
+
+<PageTitle>Pizza Details</PageTitle>
+
+@if (Pizza is null)
+{
+    <section class="page-heading">
+        <h1>Pizza not found</h1>
+        <p>That pizza is not on today's menu.</p>
+        <a class="button primary-button" href="pizzas">Back to pizza list</a>
+    </section>
+}
+else
+{
+    <section class="detail-panel">
+        <p class="eyebrow">PIZZA @($"0{Pizza.Id}")</p>
+        <h1>@Pizza.Name</h1>
+        <p>@Pizza.Description</p>
+        <p class="detail-price">@Pizza.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+        <a class="button primary-button" href="pizzas">Back to pizza list</a>
+    </section>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Pizza? Pizza => PizzaCatalog.All.FirstOrDefault(pizza => pizza.Id == Id);
+}
